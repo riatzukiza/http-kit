@@ -1,0 +1,14 @@
+(namespace http)
+(def-curried handle-router-error (res e)
+
+  (.write-head res 500)
+  (.end res e.message))
+
+(macro route-handler (...body)
+       `(=> (req res route)
+            (.catch (.resolve Promise (scoped ...@body))
+                    (handle-router-error res))))
+
+(macro with-http-route (args ...body)
+       `(.add ...@(content-of args)
+              (route-handler ...@body)))

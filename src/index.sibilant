@@ -1,0 +1,24 @@
+(include "kit/header")
+(import-namespace kit)
+
+(include "kit-interface/header")
+(import-namespace interface)
+
+(require! (lit Tree-map) "tree-kit"
+          'http 'url)
+
+(def parse (path)
+  (let ((parsed-url (.parse url path )))
+    (mixin parsed-url
+           (lit (sequence (.split parsed-url.pathname "/"))))))
+
+
+;; (macro def-route (path ...body)
+;;        "sugar for adding a route."
+;;        `(.add  app @path (=> (req res route) ...@body)))
+
+(include "../meta")
+(include "./route")
+(include "./message")
+
+(include "./router")

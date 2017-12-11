@@ -1,0 +1,30 @@
+(print Tree-map)
+(define Router Interface
+  (init (port (*tree ((create Tree-map)))
+              (server (.create-server http (=> (req res)
+                                               (.*dispatch this req res this))))))
+  (started? false)
+
+  (*dispatch (create Message))
+
+  (def-generic add (path handler *tree)
+    "introduce a new routing node to the tree."
+    (.set  *tree (get (parse path) 'sequence) handler)
+    this)
+
+  (def-generic start ( server port started?)
+    (unless started?
+      (.listen server port)
+      (assign this.started? true)))
+
+  (def-generic find (sequence *tree )
+    "locate a route given an array of keys"
+    (let* ((s (first sequence))
+           (child (.get *tree.*children s)))
+      (if child
+          (.find Router (rest sequence) child)
+          ((create Route) sequence *tree))))
+
+  (def-generic stop ()))
+
+(export Router)

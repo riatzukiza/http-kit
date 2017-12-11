@@ -1,0 +1,8 @@
+(define Route Interface
+
+  (init ( sequence tree ))
+
+  (gett path (pipe this.sequence (.join "/")))
+
+  (gett remainder this.sequence)
+  (gett value this.tree.value))

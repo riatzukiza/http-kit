@@ -1,0 +1,12 @@
+{
+    "version":"0.0.0",
+    "name":"kit-http",
+    "scripts":{
+        "test":"sibilant -x ./tests/basic.sibilant"
+    },
+    "dependencies":{
+        "kit":"../core",
+        "kit-interface":"../kit-interface",
+        "tree-kit":"../tree-kit"
+    }
+}

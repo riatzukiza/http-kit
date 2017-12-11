@@ -1,0 +1,26 @@
+(def-generic lift-request (req path-data)
+  (mixin  (lit path-data) req))
+
+(define Message Interface
+
+    (init (req res *router  ) (.handle-incoming-message this ))
+
+  (gett path-data (parse this.req.url))
+  (gett route (.find this.*router this.path-data.sequence ))
+
+  (def-generic error-status (e res path-data)
+
+    (assign res.status-code 500)
+
+    (.write res (+ (.stringify JSON path-data null "\t") "\n"))
+
+    (.end res ("Error:" e.message)))
+
+  (def-generic handle-incoming-message (req res  path-data route)
+    (try (if (not route.value)
+             (do (.write-head res 404)
+                 (.end res "resource not found"))
+             (function? route.value)
+             (.value route (lift-request req path-data) res route))
+
+         (.error-status this e))))
