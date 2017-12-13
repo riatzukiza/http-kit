@@ -1,12 +1,13 @@
 {
-    "version":"0.0.0",
-    "name":"kit-http",
-    "scripts":{
-        "test":"sibilant -x ./tests/basic.sibilant"
-    },
-    "dependencies":{
-        "kit":"../core",
-        "kit-interface":"../kit-interface",
-        "tree-kit":"../tree-kit"
-    }
+	"name": "symbiants",
+	"version": "3.0.0",
+	"author": "Aaron Beavers",
+	"main": "index.js",
+	"dependencies": {
+		"kit": "git+ssh://riatzukiza@192.168.0.150:1250/H/gits/kit",
+		"kit-interface": "git+ssh://riatzukiza@192.168.0.150:1250/H/gits/kit-interface",
+		"kit-http": "git+ssh://riatzukiza@192.168.0.150:1250/H/gits/kit-http",
+		"kit-html": "git+ssh://riatzukiza@192.168.0.150:1250/H/gits/kit-html",
+		"tree-kit": "git+ssh://riatzukiza@192.168.0.150:1250/H/gits/tree-kit"
+	}
 }
