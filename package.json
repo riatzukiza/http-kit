@@ -1,6 +1,6 @@
 {
-	"name": "symbiants",
-	"version": "3.0.0",
+	"name": "kit-http",
+	"version": "0.1.0",
 	"author": "Aaron Beavers",
 	"main": "index.js",
 	"dependencies": {
