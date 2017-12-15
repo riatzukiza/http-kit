@@ -1,0 +1,27 @@
+
+(include "kit/header")
+(import-namespace kit)
+(require! 'sibilant
+          )
+(require! (lit Router
+               route) "../src/index"
+          'http )
+
+(include "../meta")
+(import-namespace http)
+
+(var PORT 8000)
+
+(define hello Router)
+
+(.add hello "/world" (=> (req res) (.end res "hello world")))
+
+(define app Router)
+
+(.use app "/" hello)
+
+(define server Http.Server (port PORT))
+
+(.use server app)
+
+(.start server)

@@ -6,7 +6,7 @@
     (init (req res *router  ) (.handle-incoming-message this ))
 
   (gett path-data (parse this.req.url))
-  (gett route (.find this.*router this.path-data.sequence ))
+  (gett route (.find this.*router this.path-data.key ))
 
   (def-generic error-status (e res path-data)
 

@@ -1,8 +1,9 @@
-(define Route Interface
+(define Route Router
 
-  (init ( sequence tree ))
+  (init ( key handler ))
 
-  (gett path (pipe this.sequence (.join "/")))
+  (gett path (pipe this.key (.join "/")))
 
-  (gett remainder this.sequence)
-  (gett value this.tree.value))
+  (gett remainder this.key)
+  (gett value this.handler)
+  (gett *tree this.node))

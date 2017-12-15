@@ -5,8 +5,6 @@
 (require! (lit Router) "../src/index"
           'http )
 
-(print Router)
-
 (include "../meta")
 (import-namespace http)
 

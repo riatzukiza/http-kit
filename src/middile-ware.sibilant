@@ -1,0 +1,29 @@
+(define Http.Middile-ware Interface
+
+  (init ((router ((create Router)))))
+
+  (def use (path handler)
+    (.add this.router (.spit path "/")
+          handler))
+  (def send (message)
+
+    (.send this.router (lit message))))
+
+(define Http.Server Interface
+  (init (port (*server (.create-server http ))))
+  (def start ()
+    (.listen this.*server this.port))
+  (def use (middle-ware)
+    (.on this.*server 'request
+         (=> (request response)
+
+             (var url )
+
+             (.send middle-ware
+                    (lit request
+                         response
+                         url
+                         (gett url (parse request.url))
+                         (gett path this.url.pathname)
+                         (gett key (.split this.path "/"))
+                         ))))))

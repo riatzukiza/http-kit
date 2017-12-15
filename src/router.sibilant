@@ -1,29 +1,35 @@
-(print Tree-map)
+(def key-of (path)
+  (get (parse path) 'key))
+
 (define Router Interface
-  (init (port (*tree ((create Tree-map)))
-              (server (.create-server http (=> (req res)
-                                               (.*dispatch this req res this))))))
-  (started? false)
+  (init ( (*tree ((create Tree-map)))))
+  (def start () (.init this))
 
-  (*dispatch (create Message))
+  (def send (message)
+    (var route (.find this message.key))
 
-  (def-generic add (path handler *tree)
+    (assign message.route route)
+
+    (if (not route.value)
+        null ;; do nothing if no value
+        (function? route.value)
+        (.value route message)
+        (function? route.value.send)
+        (.send route.value message)))
+
+  (def-generic add (key handler *tree)
     "introduce a new routing node to the tree."
-    (.set  *tree (get (parse path) 'sequence) handler)
+    (.set  *tree key handler)
     this)
 
-  (def-generic start ( server port started?)
-    (unless started?
-      (.listen server port)
-      (assign this.started? true)))
-
-  (def-generic find (sequence *tree )
+  (def-generic find (key *tree )
     "locate a route given an array of keys"
-    (let* ((s (first sequence))
+
+    (let* ((s (first key))
            (child (.get *tree.*children s)))
       (if child
-          (.find Router (rest sequence) child)
-          ((create Route) sequence *tree))))
+          (.find Router (rest key) child)
+          *tree.value)))
 
   (def-generic stop ()))
 
