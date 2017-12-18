@@ -1,26 +1,70 @@
-(meta (assign sibilant.dir "/home/aaron/devel/tower/libs/kits/kit-http/src/") null)(add-to-module-lookup"/home/aaron/devel/tower/libs/kits/kit-http/src/")
+(meta (assign sibilant.dir "/home/aaron/devel/tower/libs/kits/kit-http/tests/") null)(add-to-module-lookup"/home/aaron/devel/tower/libs/kits/kit-http/tests/")
+
 (include "kit/header")
-(import-namespace interface)
-
-(require! (lit Tree-map) "tree-kit"
-          'http 'url)
-
-(def parse (path)
-  (let ((parsed-url (.parse url path )))
-    (mixin parsed-url
-           (lit (key (.split parsed-url.pathname "/"))))))
-
-
-;; (macro def-route (path ...body)
-;;        "sugar for adding a route."
-;;        `(.add  app @path (=> (req res route) ...@body)))
 (import-namespace kit)
+(require! 'sibilant)
 
-(include "kit-interface/header")
+(include "kit-events/header")
+(include "../src/index")
 
 (include "../meta")
-(include "./route")
-(include "./message")
+(import-namespace http)
 
-(include "./router")
+(var PORT 8000)
+
+
+(define hello Http.Middle-ware)
+(.init hello)
+(.use hello "world" (=> ((lit request response)) (.end response "hello world")))
+
+(define app Http.Middle-ware)
+(.init app)
+(.use app "/hello" hello)
+(.use app "" (#-> (get 'response)
+                  (tap (set 'status-code 404
+                            'status-message "Not found"))
+                  (.end "resource not found.")))
+(.use app "/test" (=> ((lit request response)) (.end response "test")))
+
+(define server Http.Server (port PORT))
+
+(.init server)
+(.use server app)
+(.start server)
+
+
+(def-promised Http.get (config)
+  (.on (.get http config success) 'error fail))
+(define Read-stream Interface
+  (def-generic drain (stream)
+    (make-promise
+     (var d "")
+     (pipe stream
+           (.on  'data (=> (chunk) (incr-by d chunk)))
+           (.on 'end (-> (success d)))
+           (.on 'error fail)))))
+
+(pipe (.get Http "http://localhost/hello/world")
+      (.then Read-stream.drain)
+      (.then (aprint "result"))
+      )
+
+(pipe (.get Http "http://localhost:8000/hello/world")
+      (.then Read-stream.drain)
+      (.then (aprint "result"))
+      )
+
+(pipe (.get Http "http://localhost:8000/hello/world/not/here")
+      (.then Read-stream.drain)
+      (.then (aprint "result"))
+      )
+
+(pipe (.get Http "http://localhost:8000/tomato")
+      (.then Read-stream.drain)
+      (.then (aprint "result"))
+      )
+(pipe (.get Http "http://localhost:8000/hello")
+      (.then Read-stream.drain)
+      (.then (aprint "result"))
+      )
 (meta (assign sibilant.dir  "./") null)

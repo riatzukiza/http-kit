@@ -2,20 +2,24 @@
   (get (parse path) 'key))
 
 (define Router Interface
-  (init ( (*tree ((create Tree-map)))))
+  (init ( (*tree ((create Tree-map)))
+          (events ((create Event-emitter)))))
   (def start () (.init this))
 
   (def send (message)
+
     (var route (.find this message.key))
 
     (assign message.route route)
-
-    (if (not route.value)
-        null ;; do nothing if no value
-        (function? route.value)
-        (.value route message)
-        (function? route.value.send)
-        (.send route.value message)))
+    (if (not (or (and route route.value)))
+        (.emit this.events 'no-route message)
+        (not route.value.key)
+        (.emit this.events 'empty-key message)
+        ((cond (-> (function? route.value))
+               (#-> route.value  )
+               (-> (function? route.value.send))
+               (#->  route.value.send ))
+         (extend message (lit (key (.slice message.key route.value.key.length))))))) 
 
   (def-generic add (key handler *tree)
     "introduce a new routing node to the tree."
@@ -29,7 +33,7 @@
            (child (.get *tree.*children s)))
       (if child
           (.find Router (rest key) child)
-          *tree.value)))
+          *tree)))
 
   (def-generic stop ()))
 

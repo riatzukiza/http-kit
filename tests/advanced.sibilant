@@ -1,27 +1,38 @@
 
 (include "kit/header")
 (import-namespace kit)
-(require! 'sibilant
-          )
-(require! (lit Router
-               route) "../src/index"
-          'http )
+(require! 'sibilant)
+
+(include "kit-events/header")
+(include "../src/index")
 
 (include "../meta")
 (import-namespace http)
 
 (var PORT 8000)
 
-(define hello Router)
+(define hello Http.Middle-ware)
+(.init hello)
+(.use hello "world" (=> ((lit request response)) (.end response "hello world")))
 
-(.add hello "/world" (=> (req res) (.end res "hello world")))
 
-(define app Router)
 
-(.use app "/" hello)
+(define app Http.Middle-ware)
+(.init app)
+(.use app "/hello" hello)
+(.use app "/test" (=> ((lit request response)) (.end response "test")))
 
 (define server Http.Server (port PORT))
 
+(.init server)
 (.use server app)
-
 (.start server)
+
+
+(def-promised Http.get (config)
+  (.on (.get http config success) 'error fail))
+
+(pipe (.get Http "http://localhost:8000/hello")
+      (.then Read-stream.drain)
+      (.then (aprint "result")))
+
