@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"dependencies": {
 		"kit": "git+ssh://riatzukiza@aaron.kettlelogic.space:1250/H/gits/kit",
-		"kit-interface": "git+ssh://riatzukiza@aaron.kettlelogic.space1250:1250/H/gits/kit-interface",
+		"kit-interface": "git+ssh://riatzukiza@aaron.kettlelogic.space:1250/H/gits/kit-interface",
 		"kit-http": "git+ssh://riatzukiza@aaron.kettlelogic.space:1250/H/gits/kit-http",
 		"kit-html": "git+ssh://riatzukiza@aaron.kettlelogic.space:1250/H/gits/kit-html",
 		"tree-kit": "git+ssh://riatzukiza@aaron.kettlelogic.space:1250/H/gits/tree-kit"
