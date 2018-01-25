@@ -18,6 +18,20 @@
 ;;        `(.add  app @path (=> (req res route) ...@body)))
 
 (include "../meta")
-(define Http Interface)
-(include "./middile-ware.sibilant")
+
+(define Http Interface
+  (def-promised get (config)
+    (.on (.get http config success) 'error fail))
+  (def request (config)
+    (var request (.request http config))
+    (lit request
+         (response (make-promise
+                    (pipe (.on request 'response success)
+                          (.on 'error fail)))))))
+(define Http.Request Interface
+  (init (config)))
+
+(include "./middle-ware")
 (include "./router")
+
+(include "./read-stream")

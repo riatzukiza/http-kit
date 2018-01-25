@@ -5,10 +5,10 @@
   (.end res e.message))
 
 (macro route-handler (...body)
-       `(=> (req res route)
+       `(=> ((lit request response route))
             (.catch (.resolve Promise (scoped ...@body))
-                    (handle-router-error res))))
+                    (handle-router-error response))))
 
 (macro with-http-route (args ...body)
-       `(.add ...@(content-of args)
+       `(.use ...@(content-of args)
               (route-handler ...@body)))

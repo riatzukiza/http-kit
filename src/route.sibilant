@@ -1,9 +1,0 @@
-(define Route Router
-
-  (init ( key handler ))
-
-  (gett path (pipe this.key (.join "/")))
-
-  (gett remainder this.key)
-  (gett value this.handler)
-  (gett *tree this.node))

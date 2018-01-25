@@ -29,10 +29,14 @@
 (.start server)
 
 
-(def-promised Http.get (config)
-  (.on (.get http config success) 'error fail))
-
 (pipe (.get Http "http://localhost:8000/hello")
       (.then Read-stream.drain)
       (.then (aprint "result")))
 
+
+(with-http-route (app "/http/route/test")
+  (.end response "a macro generated this route")
+  )
+(pipe (.get Http "http://localhost:8000/http/route/test")
+      (.then Read-stream.drain)
+      (.then (aprint "result")))

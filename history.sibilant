@@ -12,18 +12,15 @@
 
 (var PORT 8000)
 
-
 (define hello Http.Middle-ware)
 (.init hello)
+
 (.use hello "world" (=> ((lit request response)) (.end response "hello world")))
+
 
 (define app Http.Middle-ware)
 (.init app)
 (.use app "/hello" hello)
-(.use app "" (#-> (get 'response)
-                  (tap (set 'status-code 404
-                            'status-message "Not found"))
-                  (.end "resource not found.")))
 (.use app "/test" (=> ((lit request response)) (.end response "test")))
 
 (define server Http.Server (port PORT))
@@ -35,36 +32,16 @@
 
 (def-promised Http.get (config)
   (.on (.get http config success) 'error fail))
-(define Read-stream Interface
-  (def-generic drain (stream)
-    (make-promise
-     (var d "")
-     (pipe stream
-           (.on  'data (=> (chunk) (incr-by d chunk)))
-           (.on 'end (-> (success d)))
-           (.on 'error fail)))))
 
-(pipe (.get Http "http://localhost/hello/world")
-      (.then Read-stream.drain)
-      (.then (aprint "result"))
-      )
-
-(pipe (.get Http "http://localhost:8000/hello/world")
-      (.then Read-stream.drain)
-      (.then (aprint "result"))
-      )
-
-(pipe (.get Http "http://localhost:8000/hello/world/not/here")
-      (.then Read-stream.drain)
-      (.then (aprint "result"))
-      )
-
-(pipe (.get Http "http://localhost:8000/tomato")
-      (.then Read-stream.drain)
-      (.then (aprint "result"))
-      )
 (pipe (.get Http "http://localhost:8000/hello")
       (.then Read-stream.drain)
-      (.then (aprint "result"))
-      )
+      (.then (aprint "result")))
+
+
+(with-http-route (app "/http/route/test")
+  (.end response "a macro generated this route")
+  )
+(pipe (.get Http "http://localhost:8000/http/route/test")
+      (.then Read-stream.drain)
+      (.then (aprint "result")))
 (meta (assign sibilant.dir  "./") null)
