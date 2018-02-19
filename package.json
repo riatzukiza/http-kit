@@ -4,10 +4,10 @@
 	"author": "Aaron Beavers",
 	"main": "index.js",
 	"dependencies": {
-		"kit": "git+ssh://riatzukiza@aaron.kettlelogic.space:1250/H/gits/kit",
-		"kit-interface": "git+ssh://riatzukiza@aaron.kettlelogic.space:1250/H/gits/kit-interface",
-		"kit-http": "git+ssh://riatzukiza@aaron.kettlelogic.space:1250/H/gits/kit-http",
-		"kit-html": "git+ssh://riatzukiza@aaron.kettlelogic.space:1250/H/gits/kit-html",
-		"tree-kit": "git+ssh://riatzukiza@aaron.kettlelogic.space:1250/H/gits/tree-kit"
+		"kit": "git+https://github.com/riatzukiza/kit.git",
+		"kit-interface": "git+https://github.com/riatzukiza/kit-interface.git",
+		"kit-http": "git+https://github.com/riatzukiza/kit-http.git",
+		"kit-html": "git+https://github.com/riatzukiza/kit-html.git",
+		"tree-kit": "git+https://github.com/riatzukiza/tree-kit.git"
 	}
 }
