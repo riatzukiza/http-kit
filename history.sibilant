@@ -47,3 +47,55 @@
 (include "kit/inc/shell")
 (import-namespace shell)
 (shell (git add ".") (git commit ["-m" "'basic tests passing again.'"]))
+(shell (git push github master))
+c
+o
+m
+e
+/
+a
+a
+r
+o
+n
+/
+d
+e
+v
+e
+l
+/
+t
+o
+w
+e
+r
+/
+l
+i
+b
+s
+/
+k
+i
+t
+s
+/
+k
+i
+t
+-
+h
+t
+m
+l
+/
+t
+e
+s
+t
+s
+/
+d
+/
+h
