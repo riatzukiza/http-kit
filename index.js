@@ -81,6 +81,7 @@ var Http = Interface.define("Http", {
     
    }
  });
+module.exports = Http;
 Http.Request = Interface.define("Http.Request", { 
   init( config = this.config ){ 
     
