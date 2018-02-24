@@ -1,47 +1,49 @@
-(meta (assign sibilant.dir "/home/aaron/devel/tower/libs/kits/kit-http/tests/") null)(add-to-module-lookup"/home/aaron/devel/tower/libs/kits/kit-http/tests/")
-
+(print 'yo)
+(meta (assign sibilant.dir "/home/aaron/devel/tower/libs/kits/kit-http/tests/") null)
+(add-to-module-lookup"/home/aaron/devel/tower/libs/kits/kit-http/tests/")
 (include "kit/header")
-(import-namespace kit)
-(require! 'sibilant)
-
-(include "kit-events/header")
-(include "../src/index")
-
-(include "../meta")
 (import-namespace http)
-
 (var PORT 8000)
+(var server ((create Http.Server) PORT))
+(var app ((create Http.Middle-ware) ))
+(var test-string " This is a test, if you see it, you pass.")
+(.use app "/tests/add/basic"
+      (route-handler
+       (print "request" request)
+       (print 'response response)
+       (print "route" route)
+       (.end response test-string)))
+(with-http-route (app "/tests/add/with-macro")
 
-(define hello Http.Middle-ware)
-(.init hello)
+  (print "request" request)
+  (print 'response response)
+  (print "route" route)
 
-(.use hello "world" (=> ((lit request response)) (.end response "hello world")))
+  (.end response test-string))
+(def-promised http-get (host)
+  (pipe (.get http host )
+        (.on 'response success)
+        (.on  'error fail)))
+(def-promised test-request (path)
 
+  (var host ("http://localhost:" PORT path))
 
-(define app Http.Middle-ware)
-(.init app)
-(.use app "/hello" hello)
-(.use app "/test" (=> ((lit request response)) (.end response "test")))
-
-(define server Http.Server (port PORT))
-
-(.init server)
+  (pipe (http-get host)
+        (.then (=> (response)
+                   (print "response recieved from" host)
+                   (.pipe response process.stdout)
+                   (.write process.stdout "\n")))))
 (.use server app)
 (.start server)
-
-
-(def-promised Http.get (config)
-  (.on (.get http config success) 'error fail))
-
-(pipe (.get Http "http://localhost:8000/hello")
-      (.then Read-stream.drain)
-      (.then (aprint "result")))
-
-
-(with-http-route (app "/http/route/test")
-  (.end response "a macro generated this route")
-  )
-(pipe (.get Http "http://localhost:8000/http/route/test")
-      (.then Read-stream.drain)
-      (.then (aprint "result")))
+(.on server.events 'listening
+     (-> (print "app listening")
+         (pipe (.all Promise (.map ["/tests/add/basic"
+                                    "/tests/add/with-macro"]
+                                   test-request)))))
+(import-namespace kit)
+(include "../meta")
+(reload "../src/index")
 (meta (assign sibilant.dir  "./") null)
+(include "kit/inc/shell")
+(import-namespace shell)
+(shell (git add ".") (git commit ["-m" "'basic tests passing again.'"]))

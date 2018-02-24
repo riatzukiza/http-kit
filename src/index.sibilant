@@ -4,6 +4,9 @@
 (include "kit-interface/header")
 (import-namespace interface)
 
+(include "kit-events/header")
+(import-namespace events)
+
 (require! (lit Tree-map) "tree-kit"
           'http 'url)
 
@@ -20,8 +23,11 @@
 (include "../meta")
 
 (define Http Interface
-  (def-promised get (config)
-    (.on (.get http config success) 'error fail))
+
+  (def get (config)
+       (make-promise
+        (.on (.get http config success) 'error fail)))
+
   (def request (config)
     (var request (.request http config))
     (lit request
@@ -35,3 +41,23 @@
 (include "./router")
 
 (include "./read-stream")
+
+(define Http.Server Interface
+
+  (init (port (*server (.create-server http ))
+              (*middle-wares [])))
+
+  (gett events this.*server)
+  (gett event this.*server)
+
+  (def start ()
+
+       (.listen this.*server this.port)
+
+       (.on this.*server 'request
+            (=> (req res)
+                (var message ((create Http.Message ) req res))
+                (.for-each this.*middle-wares
+                           (=> (m) (.send m message))))))
+
+  (def use (middle-ware) (.push this.*middle-wares middle-ware)))

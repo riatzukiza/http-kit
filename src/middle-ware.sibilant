@@ -1,7 +1,11 @@
+
 (define Http.Message Interface
   (init (request response))
+
   (gett url (parse this.request.url))
+
   (gett path this.url.pathname)
+
   (gett key (.split this.path "/")))
 
 (var not-found-404 (#-> (get 'response)
@@ -20,24 +24,18 @@
     (assign handler.key key)
     (.add this.router key
           handler))
+
   (def send (message)
 
     (.send this.router message)))
+
 (define Http.Middle-ware Middle-ware
 
   (def *parse-key (path) (.split path "/"))
 
   (init ((router ((create Router))))
+        (.add router  "" not-found-404)
         (pipe router.events
               (.on 'no-route not-found-404)
               (.on 'empty-key not-found-404)
-              (.add  "" not-found-404))))
-
-(define Http.Server Interface
-  (init (port (*server (.create-server http ))))
-  (def start ()
-    (.listen this.*server this.port))
-  (def use (middle-ware)
-    (.on this.*server 'request
-         (=> (request response)
-             (.send middle-ware ((create Http.Message) request response))))))
+              )))

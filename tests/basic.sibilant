@@ -1,50 +1,57 @@
 (include "kit/header")
+
 (import-namespace kit)
-(require! 'sibilant
-          )
-(require! (lit Router) "../src/index"
-          'http )
 
 (include "../meta")
+
+(reload "../src/index")
+
 (import-namespace http)
 
 (var PORT 8000)
-(var app ((create Router) PORT))
-(var test-string "
-This is a test, if you see it, you pass.")
 
-(.add app "/tests/add/basic"
-      (=> (req res route)
-          (print "request" req)
-          (print 'response res)
-          (print "route" route)
-          (.end res test-string)))
+(var server ((create Http.Server) PORT))
+(var app ((create Http.Middle-ware) ))
+
+(var test-string " This is a test, if you see it, you pass.")
+
+(.use app "/tests/add/basic"
+      (route-handler
+       (print "request" request)
+       (print 'response response)
+       (print "route" route)
+       (.end response test-string)))
 
 (with-http-route (app "/tests/add/with-macro")
 
-  (print "request" req)
-  (print 'response res)
+  (print "request" request)
+  (print 'response response)
   (print "route" route)
 
-  (.end res test-string))
+  (.end response test-string))
+
 (def-promised http-get (host)
   (pipe (.get http host )
         (.on 'response success)
         (.on  'error fail)))
 
 (def-promised test-request (path)
+
   (var host ("http://localhost:" PORT path))
+
   (pipe (http-get host)
-        (.then (=> (res)
+        (.then (=> (response)
                    (print "response recieved from" host)
-                   (.pipe res process.stdout)
+                   (.pipe response process.stdout)
                    (.write process.stdout "\n")))))
 
-(.start app)
-(.on app.server 'listening
-     (-> (pipe (.all Promise (.map ["/tests/add/basic"
+(.use server app)
+(.start server)
+
+(.on server.events 'listening
+     (-> (print "app listening")
+         (pipe (.all Promise (.map ["/tests/add/basic"
                                     "/tests/add/with-macro"]
-                                   test-request))))
-     )
+                                   test-request)))))
 
 

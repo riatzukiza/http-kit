@@ -1,1 +1,2 @@
-(require! "kit-http/src/index")
+(require! Http "kit-http/index.js")
+(var (lit Router) Http)
