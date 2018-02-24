@@ -34,6 +34,7 @@
          (response (make-promise
                     (pipe (.on request 'response success)
                           (.on 'error fail)))))))
+(assign module.exports Http)
 (define Http.Request Interface
   (init (config)))
 
