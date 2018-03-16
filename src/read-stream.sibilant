@@ -15,4 +15,4 @@
            (.on 'end success))))
 
   (def-generic drain (stream)
-    (.reduce Read-stream (=> (value chunk) (+ value chunk)) "")))
+    (.reduce Read-stream (=> (value chunk) (+ value chunk)) "" stream)))

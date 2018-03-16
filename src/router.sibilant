@@ -22,7 +22,7 @@
                (#-> route.value  )
                (-> (function? route.value.send))
                (#->  route.value.send ))
-         (extend message (lit (key (.slice message.key route.value.key.length))))))) 
+         (extend message (lit (key (.slice message.key route.value.key.length)))))))
 
   (def-generic add (key handler *tree)
 

@@ -1,30 +1,36 @@
 
 (include "kit/header")
 (import-namespace kit)
+
+(include "../meta")
+
 (require! 'sibilant)
 
 (include "kit-events/header")
 (include "../src/index")
+(import-namespace interface)
 
-(include "../meta")
 (import-namespace http)
 
 (var PORT 8000)
 
 (define hello Http.Middle-ware)
+
 (.init hello)
+
 (.use hello "world" (=> ((lit request response)) (.end response "hello world")))
 
-
-
 (define app Http.Middle-ware)
+
 (.init app)
+
 (.use app "/hello" hello)
 (.use app "/test" (=> ((lit request response)) (.end response "test")))
 
 (define server Http.Server (port PORT))
 
 (.init server)
+
 (.use server app)
 (.start server)
 
@@ -35,8 +41,8 @@
 
 
 (with-http-route (app "/http/route/test")
-  (.end response "a macro generated this route")
-  )
+  (.end response "a macro generated this route"))
+
 (pipe (.get Http "http://localhost:8000/http/route/test")
       (.then Read-stream.drain)
       (.then (aprint "result")))

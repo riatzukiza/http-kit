@@ -13,9 +13,6 @@
 ;
 var R = require("ramda");
 var { 
-  Interface
- } = require("kit-interface");
-var { 
   create,
   extend,
   mixin,
@@ -283,7 +280,7 @@ var ReadStream = Interface.define("ReadStream", {
       	
         return (value + chunk);
       
-      }), "");
+      }), "", stream);
     
    }
  });
