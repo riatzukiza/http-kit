@@ -1,18 +1,18 @@
 {
-	"name": "kit-http",
-	"version": "1.2.0",
-	"author": "Aaron Beavers",
-	"main": "./index.js",
-	"scripts": {
-		"compile": "sibilant ./src/index.sibilant -o .",
-      "clean":"rm -r node_modules",
-      "clean-install":"npm run clean;npm install;",
-		"publish": "npm run compile;git add .;git commit -m 'new version published';git push github master;"
-	},
-	"dependencies": {
-		"kit": "git+https://github.com/riatzukiza/kit.git",
-		"kit-interface": "git+https://github.com/riatzukiza/kit-interface.git",
-		"tree-kit": "git+https://github.com/riatzukiza/tree-kit.git",
-		"kit-events": "git+https://github.com/riatzukiza/kit-events.git"
-	}
+    "name": "kit-http",
+    "version": "1.2.0",
+    "author": "Aaron Beavers",
+    "main": "./index.js",
+    "scripts": {
+        "compile": "sibilant ./src/index.sibilant -o .",
+        "clean": "rm -r node_modules",
+        "clean-install": "npm run clean;npm install;",
+        "publish": "npm run compile;git add .;git commit -m 'new version published';git push origin master;"
+    },
+    "dependencies": {
+        "kit": "git+https://github.com/riatzukiza/kit.git",
+        "kit-interface": "git+https://github.com/riatzukiza/kit-interface.git",
+        "tree-kit": "git+https://github.com/riatzukiza/tree-kit.git",
+        "kit-events": "git+https://github.com/riatzukiza/kit-events.git"
+    }
 }
