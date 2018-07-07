@@ -1,6 +1,6 @@
 {
     "name": "@kit-js/http",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "author": "Aaron Beavers",
     "main": "./index.js",
     "scripts": {
@@ -10,9 +10,9 @@
         "publish": "npm run compile;git add .;git commit -m 'new version published';git push origin master;"
     },
     "dependencies": {
-        "@kit-js/core": "*",
-        "@kit-js/interface": "*",
         "@kit-js/async": "*",
-        "@kit-js/collections": "*"
+        "@kit-js/collections": "*",
+        "@kit-js/core": "*",
+        "@kit-js/interface": "*"
     }
 }
