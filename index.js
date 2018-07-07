@@ -1,16 +1,3 @@
-
-
-(function(a, b, c) {
-  /* node_modules/kit/inc/core/defs.sibilant:53:9 */
-
-  return foo(this);
-}).bind(this);
-
-
-
-
-
-;
 var R = require("ramda");
 var { 
   create,
@@ -19,25 +6,26 @@ var {
   conditional,
   cond,
   partiallyApplyAfter
- } = require("kit/js/util");
+ } = require("@kit-js/core/js/util");
 var { 
   Interface
- } = require("kit-interface");
+ } = require("@kit-js/interface");
 var { 
-  EventEmitter,
-  emit,
-  bubble
- } = require("kit-events");
+  Actor
+ } = require("@kit-js/async/lib/actor"),
+    { 
+  EventEmitter
+ } = require("@kit-js/async/lib/actor");
 var { 
   TreeMap
- } = require("tree-kit"),
+ } = require("@kit-js/collections"),
     http = require("http"),
     url = require("url");
 var parse = (function parse$(path) {
   /* parse src/index.sibilant:13:0 */
 
   return (function(parsedUrl) {
-    /* node_modules/kit/inc/scope.sibilant:12:9 */
+    /* node_modules/@kit-js/core/inc/scope.sibilant:12:9 */
   
     return mixin(parsedUrl, { 
       key:parsedUrl.pathname.split("/")
@@ -222,10 +210,10 @@ var Router = Interface.define("Router", {
     
       "locate a route given an array of keys";
       return (function(s) {
-        /* node_modules/kit/inc/scope.sibilant:12:9 */
+        /* node_modules/@kit-js/core/inc/scope.sibilant:12:9 */
       
         return (function(child) {
-          /* node_modules/kit/inc/scope.sibilant:12:9 */
+          /* node_modules/@kit-js/core/inc/scope.sibilant:12:9 */
         
           return (function() {
             if (child) {

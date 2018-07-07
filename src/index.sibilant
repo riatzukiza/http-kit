@@ -1,13 +1,13 @@
-(include "kit/header")
+(include "@kit-js/core/header")
 (import-namespace kit)
 
-(include "kit-interface/header")
+(include "@kit-js/interface/header")
 (import-namespace interface)
 
-(include "kit-events/header")
-(import-namespace events)
+(include "@kit-js/async/header")
+(import-namespace async)
 
-(require! (lit Tree-map) "tree-kit"
+(require! (lit Tree-map) "@kit-js/collections"
           'http 'url)
 
 (def parse (path)
